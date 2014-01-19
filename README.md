@@ -19,7 +19,7 @@ The roster div will stay at whatever dimensions your CSS dictates, and anything 
 
 ## Configuration
 
-You should pass an object as the value of `ng-scrollbar`, with any of the following fields. Only `direction` is requried. Here is an example with all of the attributes you may set. Shown values are the default values.
+You should pass an object as the value of `ng-scrollbar`. Here is an example with all of the attributes you may set. Shown values are the default values.
 
     config = {
       autoResize: false,  // If true, will listen for DOM elements being added or removed inside the scroll container
