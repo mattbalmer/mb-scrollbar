@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="scrollbar">
+<head>
+    <title>ng-scrollbar</title>
+    <link rel="stylesheet" href="inc/reset.css"/>
+    <link rel="stylesheet" href="inc/bootstrap.min.css"/>
+    <link rel="stylesheet" href="inc/style.css"/>
+    <script src="inc/angular.min.js"></script>
+    <script src="../ng-scrollbar.min.js"></script>
+    <script src="example.js"></script>
+</head>
+<body ng-controller="Automatic">
+
+    <section class='main controls'>
+        <button class='btn btn-primary' ng-click="addOne()">Add One</button>
+        <button class='btn btn-danger' ng-click="removeOne()">Remove One</button>
+    </section>
+
+    <section class="main">
+
+        <section class="list" ng-scrollbar="scrollbar('vertical', true)">
+            <div class="item" ng-repeat="item in items">
+                <span class="id">{{item.id}}</span>
+                <span class="name">{{item.name}}</span>
+                <span class="desc">{{item.desc}}</span>
+            </div>
+        </section>
+
+    </section>
+
+    <section class="main">
+
+        <section class="list" ng-scrollbar="scrollbar('horizontal', true)">
+            <div class="item" ng-repeat="item in items">
+                <span class="id">{{item.id}}</span>
+                <span class="name">{{item.name}}</span>
+                <span class="desc">{{item.desc}}</span>
+            </div>
+        </section>
+
+    </section>
+
+</body>
+</html>
