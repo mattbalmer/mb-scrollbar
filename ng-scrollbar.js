@@ -1,5 +1,5 @@
 /*
- * ng-scrollbar v1.1.0
+ * ng-scrollbar v1.1.1
  * Plugin for AngularJS
  * (c) 2014 Matthew Balmer http://mattbalmer.com
  * License: MIT
@@ -35,7 +35,7 @@ angular.module('ng-scrollbar', [])
             // Base Configuration
             var config = {
                 autoResize: false,
-                direction: scope.config.direction || 'vertical',
+                direction: (scope.config || {}).direction || 'vertical',
                 scrollbar: {
                     width: 6,
                     hoverWidth: 8,
@@ -54,7 +54,7 @@ angular.module('ng-scrollbar', [])
             config.rPosition = ifVertElseHor('right', 'bottom');
 
             // Add user-input
-            config = overwriteProperties(config, scope.config);
+            config = overwriteProperties(config, scope.config || {});
 
             // Computed configuration variables
             config.scrollbar.margin = (config.scrollbarContainer.width - config.scrollbar.width) / 2;

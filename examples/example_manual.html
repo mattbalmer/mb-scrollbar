@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="inc/bootstrap.min.css"/>
     <link rel="stylesheet" href="inc/style.css"/>
     <script src="inc/angular.min.js"></script>
-    <script src="../ng-scrollbar.min.js"></script>
+    <script src="../ng-scrollbar.js"></script>
     <script src="example.js"></script>
 </head>
 <body ng-controller="Manual">
@@ -18,7 +18,7 @@
 
     <section class="main">
 
-        <section class="list" ng-scrollbar="scrollbar('vertical')">
+        <section class="list" ng-scrollbar>
             <div class="item" ng-repeat="item in items">
                 <span class="id">{{item.id}}</span>
                 <span class="name">{{item.name}}</span>
