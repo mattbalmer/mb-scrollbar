@@ -17,6 +17,10 @@ Using the plugin is very easy - simply add the attribute `ng-scrollbar`, where t
   
 The roster div will stay at whatever dimensions your CSS dictates, and anything inside will expand infinitely in whatever direction you specify in the config.
 
+Also don't forget to include the module in your own Angular app
+
+    var app = angular.module('YourApp', ['ng-scrollbar']);
+
 ### Resizing
 
 One option to recalculate the size of the container is to set the `autoResize` config option to `true`. When the plugin detects a child element has been added/removed, it will automatically recalculate.
