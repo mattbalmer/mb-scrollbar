@@ -22,14 +22,16 @@ The roster div will stay at whatever dimensions your CSS dictates, and anything 
 You should pass an object as the value of `ng-scrollbar`. Here is an example with all of the attributes you may set. Shown values are the default values.
 
     config = {
-      autoResize: false,  // If true, will listen for DOM elements being added or removed inside the scroll container
-      direction: 'vertical',  // The direction of the scrollbar
+      autoResize: false, // If true, will listen for DOM elements being added or removed inside the scroll container
+      direction: 'vertical', // The direction of the scrollbar
       scrollbar: {  
           width: 6, // Width (thickness. Is actually height on horizontal scrollbars) of the scrollbar
-          hoverWidth: 8 // Width on scrollbar hover
+          hoverWidth: 8, // Width on scrollbar hover
+          color: 'rgba(0,0,0, .6) // Background color of the scrollbar
       },
       scrollbarContainer: {
-          width: 12 // Width of the container surrounding the scrollbar. Becomes visible on hover
+          width: 12, // Width of the container surrounding the scrollbar. Becomes visible on hover
+          color: 'rgba(0,0,0, .1) // Background color of the scrollbar container
       }
     }
     

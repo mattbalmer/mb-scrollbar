@@ -1,5 +1,5 @@
 /*
- * ng-scrollbar v1.0.1
+ * ng-scrollbar v1.1.0
  * Plugin for AngularJS
  * (c) 2014 Matthew Balmer http://mattbalmer.com
  * License: MIT
@@ -38,10 +38,12 @@ angular.module('ng-scrollbar', [])
                 direction: scope.config.direction || 'vertical',
                 scrollbar: {
                     width: 6,
-                    hoverWidth: 8
+                    hoverWidth: 8,
+                    color: 'rgba(0,0,0,.6)'
                 },
                 scrollbarContainer: {
-                    width: 12
+                    width: 12,
+                    color: 'rgba(0,0,0,.1)'
                 },
                 dragSpeedModifier : 1,
                 firefoxModifier: 40
@@ -72,7 +74,7 @@ angular.module('ng-scrollbar', [])
                     position: 'absolute',
                     cursor: 'default',
                     opacity: 0,
-                    background: 'rgba(0,0,0, .6)',
+                    background: config.scrollbar.color,
                     'border-radius': config.scrollbar.width / 2 + 'px'
                 },
                 scrollbarContainer: {
@@ -213,7 +215,7 @@ angular.module('ng-scrollbar', [])
 
             // On enter scrollbar container
             scrollbarContainer.on('mouseenter', function() {
-                scrollbarContainer.css('background', 'rgba(0,0,0,.1)');
+                scrollbarContainer.css('background', config.scrollbarContainer.color);
                 scrollbar.css( config.rDimension, config.scrollbar.hoverWidth+'px' );
                 scrollbar.css( config.rPosition, config.scrollbar.hoverMargin +'px' );
                 scrollbar.css( 'border-radius', config.scrollbar.hoverWidth / 2 + 'px' );
