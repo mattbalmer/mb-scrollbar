@@ -26,7 +26,9 @@ This option is not always ideal, and in some older browsers, may not work as exp
     // Option 1
     $scope.$broadcast('recalculateScrollbars');
 
-    // Option 2 - This option is preferred of the two. It wraps the call in a short timeout to allow the scope to compile. It also requires the `ngScrollbar` Service to be injected
+    // Option 2 - This option is preferred of the two. It wraps the call in a short timeout,
+    // which allows the scope to compile first.
+    // It also requires the `ngScrollbar` Service to be injected
     ngScrollbar.recalculate();
 
 ## Configuration
