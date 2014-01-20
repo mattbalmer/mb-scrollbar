@@ -1,3 +1,9 @@
+/*
+ * ng-scrollbar v1.0.1
+ * Plugin for AngularJS
+ * (c) 2014 Matthew Balmer http://mattbalmer.com
+ * License: MIT
+ */
 angular.module('ng-scrollbar', [])
 .directive('ngScrollbar', function() {
     return {
@@ -144,6 +150,10 @@ angular.module('ng-scrollbar', [])
             child.on('mousewheel', function(event) {
                 event.preventDefault();
 
+                // If jQuery hid the original event, retrieve it
+                if( event.originalEvent != undefined )
+                    event = event.originalEvent;
+
                 var delta = ifVertElseHor(event.wheelDeltaY || event.wheelDelta, event.wheelDeltaX || event.wheelDeltaY || event.wheelDelta);
 
                 scroll( delta );
@@ -151,6 +161,10 @@ angular.module('ng-scrollbar', [])
             if( window.navigator.userAgent.toLowerCase().indexOf('firefox') >= 0) {
                 child.on('wheel', function(event) {
                     event.preventDefault();
+
+                    // If jQuery hid the original event, retrieve it
+                    if( event.originalEvent != undefined )
+                        event = event.originalEvent;
 
                     var delta = ifVertElseHor(event.deltaY, event.deltaX > 0 ? event.deltaX : event.deltaY);
 
