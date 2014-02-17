@@ -1,4 +1,4 @@
-var app = angular.module('scrollbar', ['ng-scrollbar']);
+var app = angular.module('scrollbar', ['mb-scrollbar']);
 
 var BaseController = function($scope) {
     $scope.items = [];
@@ -36,12 +36,12 @@ app.controller('Automatic', function($scope) {
     };
 });
 
-app.controller('Manual', function($scope, ngScrollbar) {
+app.controller('Manual', function($scope, mbScrollbar) {
     new BaseController($scope);
 
     $scope.removeOne = function() {
         $scope.items.pop();
-        $scope.$broadcast('recalculateScrollbars');
+        $scope.$broadcast('recalculateMBScrollbars');
     };
 
     $scope.addOne = function() {
@@ -51,8 +51,8 @@ app.controller('Manual', function($scope, ngScrollbar) {
             name: 'Item '+i,
             desc: 'lorem ipsum dolor inquit sit amet.'
         });
-        $scope.$broadcast('recalculateScrollbars');
+        $scope.$broadcast('recalculateMBScrollbars');
     };
 
-    ngScrollbar.recalculate($scope);
+    mbScrollbar.recalculate($scope);
 });

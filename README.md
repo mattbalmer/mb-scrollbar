@@ -1,17 +1,17 @@
-ng-scrollbar
+mb-scrollbar
 ============
 
 Custom scrollbar plugin for AngularJS
 
 ## Description
 
-A small, unobtrusive plugin for AngularJS that allows placement of a custom scrollbar on any element. It will retain its size, but place any child elements into a scaling container div. The container's size can be set to automatically update, or can be called manually by broadcasting a 'recalculateScrollbars' event from your controller scope.
+A small, unobtrusive plugin for AngularJS that allows placement of a custom scrollbar on any element. It will retain its size, but place any child elements into a scaling container div. The container's size can be set to automatically update, or can be called manually by broadcasting a 'recalculateMBScrollbars' event from your controller scope.
 
 ## Usage
 
-Using the plugin is very easy - simply add the attribute `ng-scrollbar`, where the attribute's value is the config for the scrollbar. Example:
+Using the plugin is very easy - simply add the attribute `mb-scrollbar`, where the attribute's value is the config for the scrollbar. Example:
 
-    <div class='roster' ng-scrollbar="scrollbarConfig">
+    <div class='roster' mb-scrollbar="scrollbarConfig">
       <div ng-repeat="person in roster"> {{person.name}} </div>
     </div>
   
@@ -19,24 +19,24 @@ The roster div will stay at whatever dimensions your CSS dictates, and anything 
 
 Also don't forget to include the module in your own Angular app
 
-    var app = angular.module('YourApp', ['ng-scrollbar']);
+    var app = angular.module('YourApp', ['mb-scrollbar']);
 
 ### Resizing
 
 One option to recalculate the size of the container is to set the `autoResize` config option to `true`. When the plugin detects a child element has been added/removed, it will automatically recalculate.
 
-This option is not always ideal, and in some older browsers, may not work as expected. Another option, to call the recalculate function manually. A small Service is provided to make this easy, though the `recalculateScrollbars` event may also be broadcast, if you prefer.
+This option is not always ideal, and in some older browsers, may not work as expected. Another option, to call the recalculate function manually. A small Service is provided to make this easy, though the `recalculateMBScrollbars` event may also be broadcast, if you prefer.
 
     // Option 1
-    $scope.$broadcast('recalculateScrollbars');
+    $scope.$broadcast('recalculateMBScrollbars');
 
     // Option 2 - This option is preferred of the two. It wraps the call in a short timeout,
-    // which allows the scope to compile first. It also requires the 'ngScrollbar' Service to be injected
-    ngScrollbar.recalculate();
+    // which allows the scope to compile first. It also requires the 'mbScrollbar' Service to be injected
+    mbScrollbar.recalculate();
 
 ## Configuration
 
-You should pass an object as the value of `ng-scrollbar`. Here is an example with all of the attributes you may set. Shown values are the default values.
+You should pass an object as the value of `mb-scrollbar`. Here is an example with all of the attributes you may set. Shown values are the default values.
 
     config = {
       autoResize: false, // If true, will listen for DOM elements being added or removed inside the scroll container

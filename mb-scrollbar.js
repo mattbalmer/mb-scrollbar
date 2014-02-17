@@ -1,16 +1,16 @@
 /*
- * ng-scrollbar v1.1.1
+ * mb-scrollbar v2.0.0
  * Plugin for AngularJS
  * (c) 2014 Matthew Balmer http://mattbalmer.com
  * License: MIT
  */
-angular.module('ng-scrollbar', [])
-.directive('ngScrollbar', function() {
+angular.module('mb-scrollbar', [])
+.directive('mbScrollbar', function() {
     return {
         restrict: 'A',
         transclude: true,
         scope: {
-            config: '=ngScrollbar'
+            config: '=mbScrollbar'
         },
         template: "<div class='ngscroll-resizable' style='position: relative; width: 100%; height: 100%;'> <div class='ngscroll-container' style='width: 100%; height: 100%;' ng-transclude></div> <div class='ngscroll-scrollbar-container' ng-style='styles.scrollbarContainer'><div class='ngscroll-scrollbar' ng-style='styles.scrollbar'></div></div> </div>",
         link: function(scope, element) {
@@ -142,7 +142,7 @@ angular.module('ng-scrollbar', [])
             }
 
             // Listen to manual recalculate calls
-            scope.$on('recalculateScrollbars', function() {
+            scope.$on('recalculateMBScrollbars', function() {
                 setTimeout(function() {
                     recalculate();
                 }, 5);
@@ -232,11 +232,11 @@ angular.module('ng-scrollbar', [])
         }
     }
 })
-.service('ngScrollbar', function() {
+.service('mbScrollbar', function() {
     // Provide a method that wraps the broadcast in a timeout, which allows use inside Controllers
     this.recalculate = function($scope) {
         setTimeout(function() {
-            $scope.$broadcast('recalculateScrollbars');
+            $scope.$broadcast('recalculateMBScrollbars');
         }, 5);
     }
 });

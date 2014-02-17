@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html ng-app="scrollbar">
 <head>
-    <title>ng-scrollbar</title>
+    <title>mb-scrollbar</title>
     <link rel="stylesheet" href="inc/reset.css"/>
     <link rel="stylesheet" href="inc/bootstrap.min.css"/>
     <link rel="stylesheet" href="inc/style.css"/>
     <script src="inc/angular.min.js"></script>
-    <script src="../ng-scrollbar.min.js"></script>
+    <script src="../mb-scrollbar.min.js"></script>
     <script src="example.js"></script>
 </head>
 <body ng-controller="Automatic">
@@ -18,7 +18,7 @@
 
     <section class="main">
 
-        <section class="list" ng-scrollbar="scrollbar('vertical', true)">
+        <section class="list" mb-scrollbar="scrollbar('vertical', true)">
             <div class="item" ng-repeat="item in items">
                 <span class="id">{{item.id}}</span>
                 <span class="name">{{item.name}}</span>
@@ -30,7 +30,7 @@
 
     <section class="main">
 
-        <section class="list" ng-scrollbar="scrollbar('horizontal', true)">
+        <section class="list" mb-scrollbar="scrollbar('horizontal', true)">
             <div class="item" ng-repeat="item in items">
                 <span class="id">{{item.id}}</span>
                 <span class="name">{{item.name}}</span>
