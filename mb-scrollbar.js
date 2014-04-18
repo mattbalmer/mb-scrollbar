@@ -125,6 +125,9 @@ angular.module('mb-scrollbar', [])
                 config.dragSpeedModifier = Math.max(1, 1 / ( scrollbarLength / containerSize ));
 
                 child.css(config.dimension, length+'px');
+                // If scroll is not necessary, set the scrollbarLength to be containerSize (minus the margins)
+                if(containerSize > length)
+                    length = containerSize;
                 scrollbarLength = ( containerSize / length ) * containerSize - config.scrollbar.margin * 2;
                 scrollbar.css(config.dimension, scrollbarLength + 'px');
                 scrollbar.css('transition', 'opacity .3s ease-in-out, border-radius .1s linear, ' +
