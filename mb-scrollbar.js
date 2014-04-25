@@ -46,7 +46,8 @@ angular.module('mb-scrollbar', [])
                     color: 'rgba(0,0,0,.1)'
                 },
                 dragSpeedModifier : 1,
-                firefoxModifier: 40
+                firefoxModifier: 40,
+                scrollTo: (scope.config || {}).scrollTo || 'none'
             };
             config.dimension = ifVertElseHor('height', 'width');
             config.rDimension = ifVertElseHor('width', 'height');
@@ -119,6 +120,7 @@ angular.module('mb-scrollbar', [])
                     for(var i = 0; i < children.length; i++) {
                         length += children[i].offsetWidth;
                     }
+
                 })();
 
                 // A higher drag-speed modifier on longer container sizes makes for more comfortable scrolling
@@ -127,15 +129,25 @@ angular.module('mb-scrollbar', [])
                 child.css(config.dimension, length+'px');
                 // If scroll is not necessary, set the scrollbarLength to be containerSize (minus the margins)
                 if(containerSize > length)
-                    length = containerSize;
+                	length = containerSize;
                 scrollbarLength = ( containerSize / length ) * containerSize - config.scrollbar.margin * 2;
                 scrollbar.css(config.dimension, scrollbarLength + 'px');
                 scrollbar.css('transition', 'opacity .3s ease-in-out, border-radius .1s linear, ' +
                     config.rDimension+' .1s linear, ' +
                     config.rPosition+' .1s linear');
 
-                // Moves the scroll area back into view if a resizing would have moved it out (eg. children removed)
-                scroll(0);
+                // Scroll to top (left) or bottom (right) or to any position given in the configuration or just stay there (none)
+                var margin = 'margin-'+config.position;
+                var currentPosition = parseInt( child.css(margin) || 0 );
+                
+                if (config.scrollTo == 'none')
+                    scroll(0); // Moves the scroll area back into view if a resizing would have moved it out (eg. children removed)
+                else if (config.scrollTo == 'top' || config.scrollTo == 'left')
+                    scroll(currentPosition);
+                else if (config.scrollTo == 'bottom' || config.scrollTo == 'right')
+                    scroll(-(length - currentPosition));
+                else
+                    scroll(parseInt(config.scrollTo));
             };
 
             // Listen to child elements being added/removed
