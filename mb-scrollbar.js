@@ -39,7 +39,8 @@ angular.module('mb-scrollbar', [])
                 scrollbar: {
                     width: 6,
                     hoverWidth: 8,
-                    color: 'rgba(0,0,0,.6)'
+                    color: 'rgba(0,0,0,.6)',
+                    show: false
                 },
                 scrollbarContainer: {
                     width: 12,
@@ -74,7 +75,7 @@ angular.module('mb-scrollbar', [])
                 scrollbar: {
                     position: 'absolute',
                     cursor: 'default',
-                    opacity: 0,
+                    opacity: config.scrollbar.show ? 1 : 0,
                     background: config.scrollbar.color,
                     'border-radius': config.scrollbar.width / 2 + 'px'
                 },
@@ -202,7 +203,8 @@ angular.module('mb-scrollbar', [])
                 // Set mouseup listener
                 angular.element(document).on('mouseup', function() {
                     scrollbarMousedown = false;
-                    scrollbar.css('opacity', 0);
+                    if(!config.scrollbar.show)
+                        scrollbar.css('opacity', 0);
                 });
 
                 scrollbarOffset = ifVertElseHor(event.screenY, event.screenX);
@@ -220,16 +222,18 @@ angular.module('mb-scrollbar', [])
             });
 
             // Show scrollbar on hover
-            element.on('mouseenter', function() {
-                scrollbar.css('opacity', 1);
-            });
-            scrollbarContainer.on('mouseenter', function() {
-                scrollbar.css('opacity', 1);
-            });
-            element.on('mouseleave', function() {
-                if(scrollbarMousedown) return;
-                scrollbar.css('opacity', 0);
-            });
+            if(!config.scrollbar.show) {
+                element.on('mouseenter', function() {
+                    scrollbar.css('opacity', 1);
+                });
+                scrollbarContainer.on('mouseenter', function() {
+                    scrollbar.css('opacity', 1);
+                });
+                element.on('mouseleave', function() {
+                    if(scrollbarMousedown) return;
+                    scrollbar.css('opacity', 0);
+                });
+            }
 
             // On enter scrollbar container
             scrollbarContainer.on('mouseenter', function() {

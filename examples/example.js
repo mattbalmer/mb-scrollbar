@@ -12,12 +12,15 @@ var BaseController = function($scope) {
     }
 
     var config = {};
-    $scope.scrollbar = function(direction, autoResize) {
+    $scope.scrollbar = function(direction, autoResize, show) {
         config.direction = direction;
         config.autoResize = autoResize;
+        config.scrollbar = {
+            show: !!show
+        };
         return config;
     }
-}
+};
 
 app.controller('Automatic', function($scope) {
     new BaseController($scope);
