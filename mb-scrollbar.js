@@ -46,7 +46,8 @@ angular.module('mb-scrollbar', [])
                     color: 'rgba(0,0,0,.1)'
                 },
                 dragSpeedModifier : 1,
-                firefoxModifier: 40
+                firefoxModifier: 40,
+                scrollTo: (scope.config || {}).scrollTo || null
             };
             config.dimension = ifVertElseHor('height', 'width');
             config.rDimension = ifVertElseHor('width', 'height');
@@ -97,11 +98,17 @@ angular.module('mb-scrollbar', [])
             function scroll(distance) {
                 var margin = 'margin-'+config.position;
                 var newMargin = parseInt( child.css(margin) || 0 ) + distance;
-                newMargin = Math.min( 0, Math.max( newMargin, -length + containerSize ) );
+
+                scrollTo(newMargin);
+            }
+
+            function scrollTo(position) {
+                var margin = 'margin-'+config.position;
+                var newMargin = Math.min( 0, Math.max( position, -length + containerSize ) );
 
                 var pct = -newMargin / length;
 
-                child.css(margin, newMargin + 'px' );
+                child.css(margin, newMargin + 'px');
                 scrollbar.css(config.position, pct * containerSize + config.scrollbar.margin +'px');
                 scrollbarContainer.css(margin, ifVertElseHor(-newMargin, 0) + 'px');
             }
@@ -119,6 +126,7 @@ angular.module('mb-scrollbar', [])
                     for(var i = 0; i < children.length; i++) {
                         length += children[i].offsetWidth;
                     }
+
                 })();
 
                 // A higher drag-speed modifier on longer container sizes makes for more comfortable scrolling
@@ -127,15 +135,22 @@ angular.module('mb-scrollbar', [])
                 child.css(config.dimension, length+'px');
                 // If scroll is not necessary, set the scrollbarLength to be containerSize (minus the margins)
                 if(containerSize > length)
-                    length = containerSize;
+                	length = containerSize;
                 scrollbarLength = ( containerSize / length ) * containerSize - config.scrollbar.margin * 2;
                 scrollbar.css(config.dimension, scrollbarLength + 'px');
                 scrollbar.css('transition', 'opacity .3s ease-in-out, border-radius .1s linear, ' +
                     config.rDimension+' .1s linear, ' +
                     config.rPosition+' .1s linear');
 
-                // Moves the scroll area back into view if a resizing would have moved it out (eg. children removed)
-                scroll(0);
+                // Scroll to the start, end, or a pixel value given in the config. If null, just stay there
+                if (config.scrollTo == null)
+                    scroll(0); // Moves the scroll area back into view if a resizing would have moved it out (eg. children removed)
+                else if (config.scrollTo == 'start')
+                    scrollTo(0);
+                else if (config.scrollTo == 'end')
+                    scrollTo( -length + containerSize );
+                else
+                    scrollTo( -parseInt(config.scrollTo) ); // Negative to account for the negative margin
             };
 
             // Listen to child elements being added/removed
