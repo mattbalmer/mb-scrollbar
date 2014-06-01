@@ -31,6 +31,16 @@ angular.module('mb-scrollbar', [])
                 }
                 return baseObject;
             }
+            function getPosition(event) {
+                var subject = event;
+                if(isTouch(event)) {
+                    subject = event.touches[0];
+                }
+                return ifVertElseHor(subject.screenY, subject.screenX);
+            }
+            function isTouch(event) {
+                return event.type.indexOf('touch') === 0;
+            }
 
             // Base Configuration
             var config = {
@@ -195,31 +205,53 @@ angular.module('mb-scrollbar', [])
             }
 
             // Scrollbar controls
-            var scrollbarMousedown, scrollbarOffset;
-            scrollbar.on('mousedown', function(event) {
+            var scrollbarMousedown, scrollbarOffset, firstPos, lastPos, startTime, endTime;
+            function onUp(event) {
+                scrollbarMousedown = false;
+                if(!config.scrollbar.show)
+                    scrollbar.css('opacity', 0);
+
+                endTime = new Date();
+            }
+            function onDown(event) {
                 event.preventDefault();
                 scrollbarMousedown = true;
 
                 // Set mouseup listener
-                angular.element(document).on('mouseup', function() {
-                    scrollbarMousedown = false;
-                    if(!config.scrollbar.show)
-                        scrollbar.css('opacity', 0);
-                });
+                angular.element(document).one('mouseup', onUp);
+                angular.element(document).one('touchcancel', onUp);
+                angular.element(document).one('touchend', onUp);
 
-                scrollbarOffset = ifVertElseHor(event.screenY, event.screenX);
+                if(isTouch(event))
+                    scrollbar.css('opacity', 1);
+
+                scrollbarOffset = getPosition(event);
+                firstPos = getPosition(event);
+                startTime = new Date();
+
                 return false;
-            });
-            angular.element(document).on('mousemove', function(event) {
+            }
+            function onMove(event) {
                 if(!scrollbarMousedown) return;
                 event.preventDefault();
 
-                var delta = ifVertElseHor(event.screenY, event.screenX) - scrollbarOffset;
+                var pos = getPosition(event);
+                var delta = pos - scrollbarOffset;
                 delta *= config.dragSpeedModifier;
                 scrollbarOffset += delta * (scrollbarLength / containerSize);
 
+                if(isTouch(event))
+                    delta *= -1;
+
+                lastPos = getPosition(event);
+
                 scroll( -delta );
-            });
+            }
+
+            scrollbar.on('mousedown', onDown);
+            element.on('touchstart', onDown);
+            angular.element(document).on('mousemove', onMove);
+            angular.element(document).on('touchmove', onMove);
 
             // Show scrollbar on hover
             if(!config.scrollbar.show) {
