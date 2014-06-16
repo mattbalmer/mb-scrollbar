@@ -44,12 +44,12 @@ You should pass an object as the value of `mb-scrollbar`. Here is an example wit
       scrollbar: {  
           width: 6, // Width (thickness. Is actually height on horizontal scrollbars) of the scrollbar
           hoverWidth: 8, // Width on scrollbar hover
-          color: 'rgba(0,0,0, .6), // Background color of the scrollbar
+          color: 'rgba(0,0,0, .6)', // Background color of the scrollbar
           show: false // If true, scrollbar will always be visible
       },
       scrollbarContainer: {
           width: 12, // Width of the container surrounding the scrollbar. Becomes visible on hover
-          color: 'rgba(0,0,0, .1) // Background color of the scrollbar container
+          color: 'rgba(0,0,0, .1)' // Background color of the scrollbar container
       },
       scrollTo: null // Scroll to the 'start' or 'end' on initialization and content changes. Pixel values may also be given.
     }
