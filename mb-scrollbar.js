@@ -171,6 +171,12 @@ angular.module('mb-scrollbar', [])
                     recalculate();
                 }, 5);
             });
+            
+            scope.$on('scrollToMBScrollbars', function (v, offset, b) {
+            	setTimeout(function () {
+            		scrollTo(offset);
+            	}, 5);
+            });
 
             // Move on scroll
             child.on('mousewheel', function(event) {
@@ -265,5 +271,10 @@ angular.module('mb-scrollbar', [])
         setTimeout(function() {
             $scope.$broadcast('recalculateMBScrollbars');
         }, 5);
-    }
+    };
+    this.scrollTo = function ($scope, v) {
+    	 setTimeout(function() {
+             $scope.$broadcast('scrollToMBScrollbars', v);
+         }, 5);
+    };
 });
