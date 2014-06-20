@@ -40,7 +40,8 @@ angular.module('mb-scrollbar', [])
                     width: 6,
                     hoverWidth: 8,
                     color: 'rgba(0,0,0,.6)',
-                    show: false
+                    show: false,
+					margin : 0
                 },
                 scrollbarContainer: {
                     width: 12,
@@ -66,7 +67,7 @@ angular.module('mb-scrollbar', [])
             var child = angular.element( element[0].querySelector('.ngscroll-container') ),
                 scrollbarContainer = angular.element( element[0].querySelector('.ngscroll-scrollbar-container') ),
                 scrollbar = angular.element( scrollbarContainer.children()[0] ),
-                containerSize = ifVertElseHor( element[0].offsetHeight, element[0].offsetWidth),
+                containerSize = 0,
                 scrollbarLength,
                 length = 0;
 
@@ -116,6 +117,7 @@ angular.module('mb-scrollbar', [])
 
             // On item set change
             var recalculate = function() {
+				
                 ifVertElseHor(function() {
                     child.css('height', 'auto');
                     length = child[0].scrollHeight || 0;
@@ -130,6 +132,9 @@ angular.module('mb-scrollbar', [])
 
                 })();
 
+				// Bug that the containerSize is not known at the initialisation of the script. After a recalculate it is known, update and use it.
+				containerSize = ifVertElseHor( element[0].offsetHeight, element[0].offsetWidth);
+				
                 // A higher drag-speed modifier on longer container sizes makes for more comfortable scrolling
                 config.dragSpeedModifier = Math.max(1, 1 / ( scrollbarLength / containerSize ));
 
