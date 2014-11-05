@@ -128,6 +128,8 @@ angular.module('mb-scrollbar', [])
                     }
 
                 })();
+                
+                containerSize = containerSize || ifVertElseHor( element[0].offsetHeight, element[0].offsetWidth);
 
                 // A higher drag-speed modifier on longer container sizes makes for more comfortable scrolling
                 config.dragSpeedModifier = Math.max(1, 1 / ( scrollbarLength / containerSize ));
