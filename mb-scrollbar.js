@@ -75,7 +75,6 @@ angular.module('mb-scrollbar', [])
                 scrollbar: {
                     position: 'absolute',
                     cursor: 'default',
-                    opacity: config.scrollbar.show ? 1 : 0,
                     background: config.scrollbar.color,
                     'border-radius': config.scrollbar.width / 2 + 'px'
                 },
@@ -207,8 +206,6 @@ angular.module('mb-scrollbar', [])
                 // Set mouseup listener
                 angular.element(document).on('mouseup', function() {
                     scrollbarMousedown = false;
-                    if(!config.scrollbar.show)
-                        scrollbar.css('opacity', 0);
                 });
 
                 scrollbarOffset = ifVertElseHor(event.screenY, event.screenX);
@@ -224,20 +221,6 @@ angular.module('mb-scrollbar', [])
 
                 scroll( -delta );
             });
-
-            // Show scrollbar on hover
-            if(!config.scrollbar.show) {
-                element.on('mouseenter', function() {
-                    scrollbar.css('opacity', 1);
-                });
-                scrollbarContainer.on('mouseenter', function() {
-                    scrollbar.css('opacity', 1);
-                });
-                element.on('mouseleave', function() {
-                    if(scrollbarMousedown) return;
-                    scrollbar.css('opacity', 0);
-                });
-            }
 
             // On enter scrollbar container
             scrollbarContainer.on('mouseenter', function() {
