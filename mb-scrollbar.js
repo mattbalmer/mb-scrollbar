@@ -75,6 +75,7 @@ angular.module('mb-scrollbar', [])
                 scrollbar: {
                     position: 'absolute',
                     cursor: 'default',
+                    opacity: config.scrollbar.show ? 1 : 0,
                     background: config.scrollbar.color,
                     'border-radius': config.scrollbar.width / 2 + 'px'
                 },
@@ -113,6 +114,14 @@ angular.module('mb-scrollbar', [])
                 scrollbarContainer.css(margin, ifVertElseHor(-newMargin, 0) + 'px');
             }
 
+            // Hiding/showing the scrollbar
+            function hideScrollbar() {
+                scrollbar.css('opacity', 0);
+            }
+            function showScrollbar() {
+                scrollbar.css('opacity', 1);
+            }
+
             // On item set change
             var recalculate = function() {
                 ifVertElseHor(function() {
@@ -128,20 +137,25 @@ angular.module('mb-scrollbar', [])
                     }
 
                 })();
-                
-                containerSize = containerSize || ifVertElseHor( element[0].offsetHeight, element[0].offsetWidth);
 
                 // A higher drag-speed modifier on longer container sizes makes for more comfortable scrolling
                 config.dragSpeedModifier = Math.max(1, 1 / ( scrollbarLength / containerSize ));
 
                 child.css(config.dimension, length+'px');
+
                 // If scroll is not necessary, set the scrollbarLength to be containerSize (minus the margins)
-                if(containerSize > length) {
+                if(containerSize >= length) {
                     length = containerSize;
-                    scrollbarContainer.addClass('noScroll');
+                    element.addClass('no-scrollbar');
+                    element.removeClass('has-scrollbar');
+                    hideScrollbar();
                 } else {
-                    scrollbarContainer.removeClass('noScroll');
+                    element.addClass('has-scrollbar');
+                    element.removeClass('no-scrollbar');
+                    if(config.scrollbar.show)
+                        showScrollbar();
                 }
+
                 scrollbarLength = ( containerSize / length ) * containerSize - config.scrollbar.margin * 2;
                 scrollbar.css(config.dimension, scrollbarLength + 'px');
                 scrollbar.css('transition', 'opacity .3s ease-in-out, border-radius .1s linear, ' +
@@ -208,6 +222,8 @@ angular.module('mb-scrollbar', [])
                 // Set mouseup listener
                 angular.element(document).on('mouseup', function() {
                     scrollbarMousedown = false;
+                    if(!config.scrollbar.show)
+                        hideScrollbar();
                 });
 
                 scrollbarOffset = ifVertElseHor(event.screenY, event.screenX);
@@ -223,6 +239,16 @@ angular.module('mb-scrollbar', [])
 
                 scroll( -delta );
             });
+
+            // Show scrollbar on hover
+            if(!config.scrollbar.show) {
+                element.on('mouseenter', showScrollbar);
+                scrollbarContainer.on('mouseenter', showScrollbar);
+                element.on('mouseleave', function() {
+                    if(scrollbarMousedown) return;
+                    hideScrollbar();
+                });
+            }
 
             // On enter scrollbar container
             scrollbarContainer.on('mouseenter', function() {

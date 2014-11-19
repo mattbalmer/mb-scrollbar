@@ -34,6 +34,11 @@ This option is not always ideal, and in some older browsers, may not work as exp
     // which allows the scope to compile first. It also requires the 'mbScrollbar' Service to be injected
     mbScrollbar.recalculate();
 
+Also note that when the scrollbar is no longer necessary, it will automatically hide. Should you require any custom styling, you may target the following classes on the element with the `mb-scrollbar` attribute
+
+    .has-scrollbar - when the content is scrollable
+    .no-scrollbar - when the content is NOT scrollable
+
 ## Configuration
 
 You should pass an object as the value of `mb-scrollbar`. Here is an example with all of the attributes you may set. Shown values are the default values.
