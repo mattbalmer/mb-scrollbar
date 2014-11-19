@@ -1,5 +1,5 @@
 /*
- * mb-scrollbar v2.1.0
+ * mb-scrollbar v2.2.0
  * Plugin for AngularJS
  * (c) 2014 Matthew Balmer http://mattbalmer.com
  * License: MIT
