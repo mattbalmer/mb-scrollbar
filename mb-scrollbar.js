@@ -176,10 +176,25 @@ angular.module('mb-scrollbar', [])
                     scrollTo( -parseInt(config.scrollTo) ); // Negative to account for the negative margin
             };
 
-            // Listen to child elements being added/removed
-            if(config.autoResize === true) {
-                child.on('DOMNodeInserted', recalculate);
-                child.on('DOMNodeRemoved', recalculate);
+            // listen to DOM modification, IE11+, FF, Chrome, Safari
+            // @added new MutationObserver
+            if (typeof MutationObserver === 'function' ) {
+                var observer = new MutationObserver(function (mutations) {
+                    // delay recalculation, prevent recalculation before animation ends
+                    setTimeout(function () { recalculate(); }, 200);
+                });
+                observer.observe(element[0], {
+                    childList: true,
+                    subtree: true,
+                    characterData: true,
+                    attributes: true
+                });
+            } else {
+                // fallback compatibility
+                if(config.autoResize === true) {
+                    child.on('DOMNodeInserted', recalculate);
+                    child.on('DOMNodeRemoved', recalculate);
+                } 
             }
 
             // Listen to manual recalculate calls
