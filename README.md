@@ -35,7 +35,7 @@ This option is not always ideal, and in some older browsers, may not work as exp
     mbScrollbar.recalculate();
 
 ## Scrolling
-To scroll to a fixed point a method was added to the `mbScrollbar` service. Easily call `mbScrollbar.scrollTo(0)` to change the scroll position.
+To scroll to a fixed point a method was added to the `mbScrollbar` service. Easily call `mbScrollbar.scrollTo(0)` to change the scroll position. Keep in mind that since this value is simply applied to the container margin, it should probably be negative.
 	
 ## Configuration
 

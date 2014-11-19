@@ -1,5 +1,5 @@
 /*
- * mb-scrollbar v2.0.0
+ * mb-scrollbar v2.1.0
  * Plugin for AngularJS
  * (c) 2014 Matthew Balmer http://mattbalmer.com
  * License: MIT
@@ -40,8 +40,7 @@ angular.module('mb-scrollbar', [])
                     width: 6,
                     hoverWidth: 8,
                     color: 'rgba(0,0,0,.6)',
-                    show: false,
-					margin : 0
+                    show: false
                 },
                 scrollbarContainer: {
                     width: 12,
@@ -117,7 +116,6 @@ angular.module('mb-scrollbar', [])
 
             // On item set change
             var recalculate = function() {
-				
                 ifVertElseHor(function() {
                     child.css('height', 'auto');
                     length = child[0].scrollHeight || 0;
@@ -166,13 +164,13 @@ angular.module('mb-scrollbar', [])
             }
 
             // Listen to manual recalculate calls
-            scope.$on('recalculateMBScrollbars', function() {
+            scope.$on('recalculateMBScrollbars', function(event) {
                 setTimeout(function() {
                     recalculate();
                 }, 5);
             });
             
-            scope.$on('scrollToMBScrollbars', function (v, offset, b) {
+            scope.$on('scrollToMBScrollbars', function (event, offset) {
             	setTimeout(function () {
             		scrollTo(offset);
             	}, 5);
@@ -272,9 +270,9 @@ angular.module('mb-scrollbar', [])
             $scope.$broadcast('recalculateMBScrollbars');
         }, 5);
     };
-    this.scrollTo = function ($scope, v) {
+    this.scrollTo = function ($scope, event) {
     	 setTimeout(function() {
-             $scope.$broadcast('scrollToMBScrollbars', v);
+             $scope.$broadcast('scrollToMBScrollbars', event);
          }, 5);
     };
 });
