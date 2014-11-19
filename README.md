@@ -34,6 +34,9 @@ This option is not always ideal, and in some older browsers, may not work as exp
     // which allows the scope to compile first. It also requires the 'mbScrollbar' Service to be injected
     mbScrollbar.recalculate();
 
+## Scrolling
+To scroll to a fixed point a method was added to the `mbScrollbar` service. Easily call `mbScrollbar.scrollTo(0)` to change the scroll position. Keep in mind that since this value is simply applied to the container margin, it should probably be negative.
+	
 ## Configuration
 
 You should pass an object as the value of `mb-scrollbar`. Here is an example with all of the attributes you may set. Shown values are the default values.

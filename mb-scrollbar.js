@@ -1,5 +1,5 @@
 /*
- * mb-scrollbar v2.0.0
+ * mb-scrollbar v2.1.0
  * Plugin for AngularJS
  * (c) 2014 Matthew Balmer http://mattbalmer.com
  * License: MIT
@@ -66,7 +66,7 @@ angular.module('mb-scrollbar', [])
             var child = angular.element( element[0].querySelector('.ngscroll-container') ),
                 scrollbarContainer = angular.element( element[0].querySelector('.ngscroll-scrollbar-container') ),
                 scrollbar = angular.element( scrollbarContainer.children()[0] ),
-                containerSize = ifVertElseHor( element[0].offsetHeight, element[0].offsetWidth),
+                containerSize = 0,
                 scrollbarLength,
                 length = 0;
 
@@ -130,6 +130,9 @@ angular.module('mb-scrollbar', [])
 
                 })();
 
+				// Bug that the containerSize is not known at the initialisation of the script. After a recalculate it is known, update and use it.
+				containerSize = ifVertElseHor( element[0].offsetHeight, element[0].offsetWidth);
+				
                 // A higher drag-speed modifier on longer container sizes makes for more comfortable scrolling
                 config.dragSpeedModifier = Math.max(1, 1 / ( scrollbarLength / containerSize ));
 
@@ -161,10 +164,16 @@ angular.module('mb-scrollbar', [])
             }
 
             // Listen to manual recalculate calls
-            scope.$on('recalculateMBScrollbars', function() {
+            scope.$on('recalculateMBScrollbars', function(event) {
                 setTimeout(function() {
                     recalculate();
                 }, 5);
+            });
+            
+            scope.$on('scrollToMBScrollbars', function (event, offset) {
+            	setTimeout(function () {
+            		scrollTo(offset);
+            	}, 5);
             });
 
             // Move on scroll
@@ -260,5 +269,10 @@ angular.module('mb-scrollbar', [])
         setTimeout(function() {
             $scope.$broadcast('recalculateMBScrollbars');
         }, 5);
-    }
+    };
+    this.scrollTo = function ($scope, event) {
+    	 setTimeout(function() {
+             $scope.$broadcast('scrollToMBScrollbars', event);
+         }, 5);
+    };
 });
