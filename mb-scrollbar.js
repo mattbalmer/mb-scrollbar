@@ -1,5 +1,5 @@
 /*
- * mb-scrollbar v2.0.0
+ * mb-scrollbar v2.2.0
  * Plugin for AngularJS
  * (c) 2014 Matthew Balmer http://mattbalmer.com
  * License: MIT
@@ -76,7 +76,7 @@ angular.module('mb-scrollbar', [])
             var child = angular.element( element[0].querySelector('.ngscroll-container') ),
                 scrollbarContainer = angular.element( element[0].querySelector('.ngscroll-scrollbar-container') ),
                 scrollbar = angular.element( scrollbarContainer.children()[0] ),
-                containerSize = ifVertElseHor( element[0].offsetHeight, element[0].offsetWidth),
+                containerSize = 0,
                 scrollbarLength,
                 length = 0;
 
@@ -124,6 +124,14 @@ angular.module('mb-scrollbar', [])
                 scrollbarContainer.css(margin, ifVertElseHor(-newMargin, 0) + 'px');
             }
 
+            // Hiding/showing the scrollbar
+            function hideScrollbar() {
+                scrollbar.css('opacity', 0);
+            }
+            function showScrollbar() {
+                scrollbar.css('opacity', 1);
+            }
+
             // On item set change
             var recalculate = function() {
                 ifVertElseHor(function() {
@@ -140,13 +148,27 @@ angular.module('mb-scrollbar', [])
 
                 })();
 
+				// Bug that the containerSize is not known at the initialisation of the script. After a recalculate it is known, update and use it.
+				containerSize = ifVertElseHor( element[0].offsetHeight, element[0].offsetWidth);
+				
                 // A higher drag-speed modifier on longer container sizes makes for more comfortable scrolling
                 config.dragSpeedModifier = Math.max(1, 1 / ( scrollbarLength / containerSize ));
 
                 child.css(config.dimension, length+'px');
+
                 // If scroll is not necessary, set the scrollbarLength to be containerSize (minus the margins)
-                if(containerSize > length)
-                	length = containerSize;
+                if(containerSize >= length) {
+                    length = containerSize;
+                    element.addClass('no-scrollbar');
+                    element.removeClass('has-scrollbar');
+                    hideScrollbar();
+                } else {
+                    element.addClass('has-scrollbar');
+                    element.removeClass('no-scrollbar');
+                    if(config.scrollbar.show)
+                        showScrollbar();
+                }
+
                 scrollbarLength = ( containerSize / length ) * containerSize - config.scrollbar.margin * 2;
                 scrollbar.css(config.dimension, scrollbarLength + 'px');
                 scrollbar.css('transition', 'opacity .3s ease-in-out, border-radius .1s linear, ' +
@@ -164,17 +186,38 @@ angular.module('mb-scrollbar', [])
                     scrollTo( -parseInt(config.scrollTo) ); // Negative to account for the negative margin
             };
 
-            // Listen to child elements being added/removed
-            if(config.autoResize === true) {
-                child.on('DOMNodeInserted', recalculate);
-                child.on('DOMNodeRemoved', recalculate);
+            // listen to DOM modification, IE11+, FF, Chrome, Safari
+            // @added new MutationObserver
+            if (typeof MutationObserver === 'function' ) {
+                var observer = new MutationObserver(function (mutations) {
+                    // delay recalculation, prevent recalculation before animation ends
+                    setTimeout(function () { recalculate(); }, 200);
+                });
+                observer.observe(element[0], {
+                    childList: true,
+                    subtree: true,
+                    characterData: true,
+                    attributes: true
+                });
+            } else {
+                // fallback compatibility
+                if(config.autoResize === true) {
+                    child.on('DOMNodeInserted', recalculate);
+                    child.on('DOMNodeRemoved', recalculate);
+                } 
             }
 
             // Listen to manual recalculate calls
-            scope.$on('recalculateMBScrollbars', function() {
+            scope.$on('recalculateMBScrollbars', function(event) {
                 setTimeout(function() {
                     recalculate();
                 }, 5);
+            });
+            
+            scope.$on('scrollToMBScrollbars', function (event, offset) {
+            	setTimeout(function () {
+            		scrollTo(offset);
+            	}, 5);
             });
 
             // Move on scroll
@@ -209,7 +252,7 @@ angular.module('mb-scrollbar', [])
             function onUp(event) {
                 scrollbarMousedown = false;
                 if(!config.scrollbar.show)
-                    scrollbar.css('opacity', 0);
+                    hideScrollbar();
 
                 endTime = new Date();
             }
@@ -223,7 +266,7 @@ angular.module('mb-scrollbar', [])
                 angular.element(document).one('touchend', onUp);
 
                 if(isTouch(event))
-                    scrollbar.css('opacity', 1);
+                    showScrollbar();
 
                 scrollbarOffset = getPosition(event);
                 firstPos = getPosition(event);
@@ -255,15 +298,11 @@ angular.module('mb-scrollbar', [])
 
             // Show scrollbar on hover
             if(!config.scrollbar.show) {
-                element.on('mouseenter', function() {
-                    scrollbar.css('opacity', 1);
-                });
-                scrollbarContainer.on('mouseenter', function() {
-                    scrollbar.css('opacity', 1);
-                });
+                element.on('mouseenter', showScrollbar);
+                scrollbarContainer.on('mouseenter', showScrollbar);
                 element.on('mouseleave', function() {
                     if(scrollbarMousedown) return;
-                    scrollbar.css('opacity', 0);
+                    hideScrollbar();
                 });
             }
 
@@ -292,5 +331,10 @@ angular.module('mb-scrollbar', [])
         setTimeout(function() {
             $scope.$broadcast('recalculateMBScrollbars');
         }, 5);
-    }
+    };
+    this.scrollTo = function ($scope, event) {
+    	 setTimeout(function() {
+             $scope.$broadcast('scrollToMBScrollbars', event);
+         }, 5);
+    };
 });
