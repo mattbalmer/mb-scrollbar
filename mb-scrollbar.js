@@ -4,6 +4,8 @@
  * (c) 2014 Matthew Balmer http://mattbalmer.com
  * License: MIT
  */
+(function ( window, angular ) {
+
 angular.module('mb-scrollbar', [])
 .directive('mbScrollbar', function() {
     return {
@@ -138,9 +140,9 @@ angular.module('mb-scrollbar', [])
 
                 })();
 
-				// Bug that the containerSize is not known at the initialisation of the script. After a recalculate it is known, update and use it.
-				containerSize = ifVertElseHor( element[0].offsetHeight, element[0].offsetWidth);
-				
+                // Bug that the containerSize is not known at the initialisation of the script. After a recalculate it is known, update and use it.
+                containerSize = ifVertElseHor( element[0].offsetHeight, element[0].offsetWidth);
+
                 // A higher drag-speed modifier on longer container sizes makes for more comfortable scrolling
                 config.dragSpeedModifier = Math.max(1, 1 / ( scrollbarLength / containerSize ));
 
@@ -203,11 +205,11 @@ angular.module('mb-scrollbar', [])
                     recalculate();
                 }, 5);
             });
-            
+
             scope.$on('scrollToMBScrollbars', function (event, offset) {
-            	setTimeout(function () {
-            		scrollTo(offset);
-            	}, 5);
+                setTimeout(function () {
+                    scrollTo(offset);
+                }, 5);
             });
 
             // Move on scroll
@@ -301,8 +303,9 @@ angular.module('mb-scrollbar', [])
         }, 5);
     };
     this.scrollTo = function ($scope, event) {
-    	 setTimeout(function() {
+         setTimeout(function() {
              $scope.$broadcast('scrollToMBScrollbars', event);
          }, 5);
     };
 });
+})( window, window.angular );
