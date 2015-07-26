@@ -1,4 +1,4 @@
-var app = angular.module('scrollbar', ['mb-scrollbar']);
+var app = angular.module('scrollbar', ['mb-scrollbar', 'pagination']);
 
 var BaseController = function($scope) {
     $scope.items = [];
@@ -55,6 +55,12 @@ app.controller('Manual', function($scope, mbScrollbar) {
             desc: 'lorem ipsum dolor inquit sit amet.'
         });
         $scope.$broadcast('recalculateMBScrollbars');
+    };
+    $scope.loadMore = function(){
+        for(var i=0;i<5; i++){
+            $scope.addOne();
+        }
+        console.log('pagination function call');
     };
 
     mbScrollbar.recalculate($scope);
