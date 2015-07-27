@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="inc/style.css"/>
     <script src="inc/angular.min.js"></script>
     <script src="../mb-scrollbar.js"></script>
+    <script src="../pagination-scrollbar.js"></script>
     <script src="example.js"></script>
 </head>
 <body ng-controller="Manual">
@@ -18,7 +19,7 @@
 
     <section class="main">
 
-        <section class="list" mb-scrollbar>
+        <section class="list" mb-scrollbar pagination="loadMore()">
             <div class="item" ng-repeat="item in items">
                 <span class="id">{{item.id}}</span>
                 <span class="name">{{item.name}}</span>
@@ -30,7 +31,7 @@
 
     <section class="main">
 
-        <section class="list" mb-scrollbar="scrollbar('horizontal', false, true)">
+        <section class="list" mb-scrollbar="scrollbar('horizontal', false, true)" pagination="loadMore()">
             <div class="item" ng-repeat="item in items">
                 <span class="id">{{item.id}}</span>
                 <span class="name">{{item.name}}</span>
