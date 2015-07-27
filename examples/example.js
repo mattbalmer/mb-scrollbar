@@ -57,9 +57,6 @@ app.controller('Manual', function($scope, mbScrollbar) {
         $scope.$broadcast('recalculateMBScrollbars');
     };
     $scope.loadMore = function(){
-        for(var i=0;i<5; i++){
-            $scope.addOne();
-        }
         console.log('pagination function call');
     };
 

@@ -11,27 +11,34 @@ angular.module('pagination', [])
 
             link: {
                 post: function(scope, element, attrs){
-
                     var _monitorElement = element[0].querySelector('.ngscroll-container'),
-                        _scrollHeight = _monitorElement.scrollHeight,
-                        _offsetHeight = _monitorElement.offsetHeight;
-                    var child = angular.element(_monitorElement);
+                        _child = angular.element(_monitorElement),
+                        _isHorizontal = attrs.mbScrollbar.indexOf('horizontal') >= 0,
+                        _position = 'margin-top';
+
+                    var _scrollSize = _monitorElement.scrollHeight,
+                        _offsetSize = _monitorElement.offsetHeight;
+
+                    if(_isHorizontal){
+                        _scrollSize = _monitorElement.scrollWidth,
+                        _offsetSize = _monitorElement.offsetWidth;
+                        _position = 'margin-left';
+                    }
 
                     var observer = new MutationObserver(function (mutations) {
 
-                        var _currentMarginTop = Math.abs(parseInt(child.css('margin-top')));
-                        _scrollHeight = _monitorElement.scrollHeight;
+                        var _currentMarginValue = Math.abs(parseInt(_child.css(_position)));
+                        _scrollSize = _isHorizontal ? _monitorElement.scrollWidth : _monitorElement.scrollHeight;
 
-                         if((_scrollHeight-_offsetHeight) === _currentMarginTop && _currentMarginTop !== 0 && observer.isNotScrollDown){
-                            console.log('It is down haha');
+                        if((_scrollSize-_offsetSize) === _currentMarginValue && _currentMarginValue !== 0 && observer.isNotScrollDown){
                             observer.isNotScrollDown = false;
                             scope.$apply(attrs.pagination);
-
-                         }else if((_scrollHeight-_offsetHeight) !== _currentMarginTop){
+                        }else if((_scrollSize-_offsetSize) !== _currentMarginValue){
                             observer.isNotScrollDown = true;
-                         }
+                        }
 
                     });
+
                     observer.observe(_monitorElement, {
                         attributes: true,
                         attributeOldValue: true,
